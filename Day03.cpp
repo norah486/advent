@@ -9,7 +9,7 @@ char mostRep(const vector<string>& values, int pos, int mode) {
     int counter1[20] = { 0 };
 
     string currentValue;
-    for (int i = 0; i < values.size() - 2; i++) {
+    for (int i = 0; i < values.size(); i++) {
         currentValue = values[i];
         for (int j = 0; j <= currentValue.length(); j++) {
             if (currentValue[j] == '0') counter0[j]++;
@@ -21,19 +21,18 @@ char mostRep(const vector<string>& values, int pos, int mode) {
     // 0 - Return '1' if number of elements is the same
     // 1 - Return '0' if number of elements is the same
     if (mode == 0) {
-        cout << "Size: " << values.size() << " Pos: " << pos << '\n' << "counter0: " << counter0[pos] << '\n' << "counter1: " << counter1[pos] << endl;
         if (counter0[pos] > counter1[pos]) return '0';
         else if (counter0[pos] <= counter1[pos]) return '1';
     } else if (mode == 1) {
-        if (counter0[pos] >= counter1[pos]) return '0';
-        else if (counter0[pos] < counter1[pos]) return '1';
+        if (counter0[pos] > counter1[pos]) return '0';
+        else if (counter0[pos] <= counter1[pos]) return '1';
     }
     return 'X';
 }
 
 int main() {
     ifstream myFile;
-    myFile.open(R"(C:\Users\admin\Documents\Coding\AoC-CPP\Day01.txt)");
+    myFile.open(R"(C:\Users\admin\Documents\Coding\AoC-CPP\Day03.txt)");
 
     int i;
     int counter0[20] = { 0 };
@@ -61,6 +60,7 @@ int main() {
         }
     } else {
         cout << "Couldn't open the file" << endl;
+        return -1;
     }
 
     vector<string> storedValuesCopy = storedValues;
@@ -88,7 +88,6 @@ int main() {
                 if (tempString[j] != compareTo) storedValues.erase(storedValues.begin() + i);
             }
         }
-        // cout << "Size A: " << storedValues.size() << endl;
     }
 
     for (int j = 0; j < textLength; j++) {
@@ -101,7 +100,6 @@ int main() {
                 if (tempString[j] == compareTo) storedValuesCopy.erase(storedValuesCopy.begin() + i);
             }
         }
-        // cout << "Size B: " << storedValuesCopy.size() << endl;
     }
 
     cout << "Oxygen generator rating: ";
