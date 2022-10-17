@@ -32,7 +32,7 @@ char mostRep(const vector<string>& values, int pos, int mode) {
 
 int main() {
     ifstream myFile;
-    myFile.open(R"(C:\Users\admin\Documents\Coding\AoC-CPP\Day03.txt)");
+    myFile.open(R"(C:\Users\admin\Documents\Coding\AoC-CPP\2021\03\sample.txt)");
 
     int i;
     int counter0[20] = { 0 };
