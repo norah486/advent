@@ -7,13 +7,13 @@ int main() {
     ifstream myFile;
     myFile.open(R"(C:\Users\admin\Documents\Coding\AoC-CPP\2021\04\sample.txt)");
 
-    int i, j;
-    int lineCounter = 0;
+    int i;
+    int lineCounter = 0, boardLine = 0;
     int boardCount = -1;
-    int boardLine = 0;
+    int numberCounter = 0;
 
     vector<string> drawnValues;
-    string boards[200][200];
+    string boards[10][5][5];
 
     if (myFile.is_open()) {
         string myString;
@@ -35,7 +35,22 @@ int main() {
                 }
             } else {
                 if (!myString.empty()) {
-                    boards[boardCount][boardLine].append(myString);
+                    string boardCurrentNumber;
+                    // Made this a 3 dimensional array because I didn't have any other good ideas
+                    for (i = 0; i < myString.length(); i++) {
+                        if (i == 2 || i == 5 || i == 8 || i == 11) {
+                            boards[boardCount][boardLine][numberCounter].append(boardCurrentNumber);
+                            boardCurrentNumber = "";
+                            numberCounter++;
+                        } else if (myString[i] != ' ') {
+                            boardCurrentNumber += myString[i];
+                            if (i == myString.length() - 1) {
+                                boards[boardCount][boardLine][numberCounter].append(boardCurrentNumber);
+                                boardCurrentNumber = "";
+                                numberCounter = 0;
+                            }
+                        }
+                    }
                     boardLine++;
                 } else {
                     boardCount++;
@@ -49,10 +64,23 @@ int main() {
         return -1;
     }
 
-    for (i = 0; i <= boardCount; i++) {
-        cout << "Board number " << i << endl;
-        for (j = 0; j < boardLine; j++) {
-            cout << boards[i][j] << endl;
+    // Explanation of each variable because I'm too lazy
+    // to put actual good name variables that don't repeat themselves
+    // (and because C++ doesn't let me parse 3 dimensional arrays to functions easily)
+    //
+    // i = Currently drawn value
+    // j = Current board
+    // l = Current line (Compared against 4 because there are only 4 lines for each board)
+    // k = Current number
+    for (i = 0; i < drawnValues.size(); i++) {
+        cout << drawnValues[i] << '\n';
+        for (int j = 0; j <= boardCount; j++) {
+            // Cycle through each line of the board
+            for (int l = 0; l <= 4; l++) {
+                for (int k = 0; k <= 4; k++) {
+                    cout << boards[j][l][k] << " ";
+                }
+            }
         }
     }
 
