@@ -7,13 +7,13 @@ int main() {
     ifstream myFile;
     myFile.open(R"(C:\Users\admin\Documents\Coding\AoC-CPP\2021\04\sample.txt)");
 
-    int i;
+    int i, l;
     int lineCounter = 0, boardLine = 0;
     int boardCount = -1;
     int numberCounter = 0;
 
     vector<string> drawnValues;
-    string boards[10][5][5];
+    string boards[300][5][5];
 
     if (myFile.is_open()) {
         string myString;
@@ -64,6 +64,8 @@ int main() {
         return -1;
     }
 
+    int saved_board;
+    int saved_number;
     // Explanation of each variable because I'm too lazy
     // to put actual good name variables that don't repeat themselves
     // (and because C++ doesn't let me parse 3 dimensional arrays to functions easily)
@@ -73,16 +75,44 @@ int main() {
     // l = Current line (Compared against 4 because there are only 4 lines for each board)
     // k = Current number
     for (i = 0; i < drawnValues.size(); i++) {
-        cout << drawnValues[i] << '\n';
         for (int j = 0; j <= boardCount; j++) {
             // Cycle through each line of the board
-            for (int l = 0; l <= 4; l++) {
+            for (l = 0; l <= 4; l++) {
+                // Cycle through each value of the line
                 for (int k = 0; k <= 4; k++) {
-                    cout << boards[j][l][k] << " ";
+                    if (drawnValues[i] == boards[j][l][k]) {
+                        boards[j][l][k] = "X";
+                    }
+                    if ((boards[j][l][0] == "X" && boards[j][l][1] == "X" && boards[j][l][2] == "X" && boards[j][l][3] == "X" && boards[j][l][4] == "X") || (boards[j][0][k] == "X" && boards[j][1][k] == "X" && boards[j][2][k] == "X" && boards[j][3][k] == "X" && boards[j][4][k] == "X")) {
+                        saved_board = j;
+                        saved_number = stoi(drawnValues[i]);
+                        cout << "BOARD " << j << endl;
+                        goto break_loop;
+                    }
                 }
             }
         }
     }
 
+    break_loop:
+    // Cycle through each line
+    vector<int> saved_board_numbers;
+    for (i = 0; i <= 4; i++) {
+        // Cycle through each value
+        for (l = 0; l <= 4; l++) {
+            if (boards[saved_board][i][l] != "X") {
+                int num = stoi(boards[saved_board][i][l]);
+                saved_board_numbers.push_back(num);
+            }
+        }
+    }
+
+    int sum = 0;
+    for (i = 0; i < saved_board_numbers.size(); i++) {
+        sum += saved_board_numbers[i];
+    }
+    cout << sum << endl;
+    cout << "Saved number: " << saved_number << endl;
+    cout << "Total: " << (sum * saved_number) << endl;
     return 0;
 }
